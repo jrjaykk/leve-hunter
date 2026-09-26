@@ -89,13 +89,12 @@ const platforms = [
 const finish = {
 
     x: 850,
-    y: 420,
+    y: 350,
 
     width: 50,
-    height: 70
+    height: 140
 
 };
-
 
 // =========================
 // KEYBOARD
@@ -354,7 +353,17 @@ function draw() {
         finish.width,
         finish.height
     );
+// Door outline
 
+ctx.strokeStyle = "black";
+ctx.lineWidth = 4;
+
+ctx.strokeRect(
+    finish.x,
+    finish.y,
+    finish.width,
+    finish.height
+);
 
     // Door handle
 
