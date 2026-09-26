@@ -9,30 +9,31 @@ body {
     color: white;
     font-family: Arial, sans-serif;
 
+    min-height: 100vh;
+
     display: flex;
     justify-content: center;
     align-items: center;
-
-    min-height: 100vh;
 }
 
 .game-container {
-    text-align: center;
     width: 100%;
+    text-align: center;
 }
 
 h1 {
-    margin-bottom: 15px;
-    font-size: 32px;
+    margin-bottom: 12px;
+    font-size: 30px;
 }
 
 #gameCanvas {
     display: block;
 
-    width: 900px;
-    max-width: 95%;
+    width: min(96vw, 1000px);
+    aspect-ratio: 16 / 9;
 
-    height: 500px;
+    height: auto;
+
     margin: auto;
 
     background: #87ceeb;
@@ -41,6 +42,7 @@ h1 {
 }
 
 .controls {
-    margin-top: 15px;
+    margin-top: 12px;
     color: #ccc;
+    font-size: 14px;
 }
