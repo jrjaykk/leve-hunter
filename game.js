@@ -10,8 +10,8 @@ canvas.height = 540;
 // =========================
 
 const player = {
-    x: 100,
-    y: 350,
+    x: 80,
+    y: 400,
 
     width: 40,
     height: 50,
@@ -34,40 +34,67 @@ const gravity = 0.6;
 
 
 // =========================
-// PLATFORMS
+// LEVEL
 // =========================
 
 const platforms = [
 
+    // Starting ground
     {
         x: 0,
         y: 490,
-        width: 960,
+        width: 300,
         height: 50
     },
 
+    // Platform 1
     {
-        x: 250,
-        y: 400,
-        width: 180,
-        height: 20
-    },
-
-    {
-        x: 520,
-        y: 330,
-        width: 180,
-        height: 20
-    },
-
-    {
-        x: 760,
-        y: 250,
+        x: 350,
+        y: 420,
         width: 150,
         height: 20
+    },
+
+    // Platform 2
+    {
+        x: 550,
+        y: 350,
+        width: 150,
+        height: 20
+    },
+
+    // Platform 3
+    {
+        x: 750,
+        y: 280,
+        width: 120,
+        height: 20
+    },
+
+    // Final ground
+    {
+        x: 700,
+        y: 490,
+        width: 260,
+        height: 50
     }
 
 ];
+
+
+// =========================
+// FINISH DOOR
+// =========================
+
+const finish = {
+
+    x: 850,
+    y: 420,
+
+    width: 50,
+    height: 70
+
+};
 
 
 // =========================
@@ -88,6 +115,7 @@ document.addEventListener("keydown", (event) => {
         player.velocityY = -player.jumpPower;
 
         player.grounded = false;
+
     }
 
 });
@@ -106,7 +134,7 @@ document.addEventListener("keyup", (event) => {
 
 function update() {
 
-    // Movement
+    // LEFT
 
     if (keys["ArrowLeft"]) {
 
@@ -114,11 +142,15 @@ function update() {
 
     }
 
+    // RIGHT
+
     else if (keys["ArrowRight"]) {
 
         player.velocityX = player.speed;
 
     }
+
+    // STOP
 
     else {
 
@@ -137,7 +169,7 @@ function update() {
     player.x += player.velocityX;
 
 
-    // Horizontal boundaries
+    // Screen boundaries
 
     if (player.x < 0) {
 
@@ -145,7 +177,10 @@ function update() {
 
     }
 
-    if (player.x + player.width > canvas.width) {
+    if (
+        player.x + player.width >
+        canvas.width
+    ) {
 
         player.x =
             canvas.width - player.width;
@@ -158,35 +193,40 @@ function update() {
     player.y += player.velocityY;
 
 
-    // Ground state
+    // Assume player is not grounded
 
     player.grounded = false;
 
 
-    // Platform collision
+    // =========================
+    // PLATFORM COLLISION
+    // =========================
 
     for (const platform of platforms) {
 
-        const isFalling =
+        const falling =
             player.velocityY >= 0;
 
-        const isAbove =
+        const abovePlatform =
             player.y + player.height <=
             platform.y + 10;
 
-        const willTouch =
+        const touchingPlatform =
             player.y + player.height +
-            player.velocityY >= platform.y;
+            player.velocityY >=
+            platform.y;
 
         const horizontalOverlap =
-            player.x < platform.x + platform.width &&
-            player.x + player.width > platform.x;
+            player.x <
+            platform.x + platform.width &&
+            player.x + player.width >
+            platform.x;
 
 
         if (
-            isFalling &&
-            isAbove &&
-            willTouch &&
+            falling &&
+            abovePlatform &&
+            touchingPlatform &&
             horizontalOverlap
         ) {
 
@@ -202,11 +242,36 @@ function update() {
     }
 
 
-    // Fell below screen
+    // =========================
+    // FALL DEATH
+    // =========================
 
-    if (player.y > canvas.height + 100) {
+    if (
+        player.y >
+        canvas.height + 100
+    ) {
 
         resetPlayer();
+
+    }
+
+
+    // =========================
+    // FINISH CHECK
+    // =========================
+
+    if (
+        player.x <
+            finish.x + finish.width &&
+        player.x + player.width >
+            finish.x &&
+        player.y <
+            finish.y + finish.height &&
+        player.y + player.height >
+            finish.y
+    ) {
+
+        levelComplete();
 
     }
 
@@ -214,16 +279,29 @@ function update() {
 
 
 // =========================
-// RESET PLAYER
+// RESET
 // =========================
 
 function resetPlayer() {
 
-    player.x = 100;
-    player.y = 350;
+    player.x = 80;
+    player.y = 400;
 
     player.velocityX = 0;
     player.velocityY = 0;
+
+}
+
+
+// =========================
+// LEVEL COMPLETE
+// =========================
+
+function levelComplete() {
+
+    alert("LEVEL 1 COMPLETE!");
+
+    resetPlayer();
 
 }
 
@@ -234,7 +312,7 @@ function resetPlayer() {
 
 function draw() {
 
-    // Sky
+    // Background
 
     ctx.fillStyle = "#87CEEB";
 
@@ -246,7 +324,9 @@ function draw() {
     );
 
 
-    // Platforms
+    // =========================
+    // PLATFORMS
+    // =========================
 
     ctx.fillStyle = "#333";
 
@@ -262,7 +342,40 @@ function draw() {
     }
 
 
-    // Player
+    // =========================
+    // FINISH DOOR
+    // =========================
+
+    ctx.fillStyle = "#8B4513";
+
+    ctx.fillRect(
+        finish.x,
+        finish.y,
+        finish.width,
+        finish.height
+    );
+
+
+    // Door handle
+
+    ctx.fillStyle = "gold";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        finish.x + 38,
+        finish.y + 35,
+        4,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    // =========================
+    // PLAYER
+    // =========================
 
     ctx.fillStyle = "red";
 
@@ -274,7 +387,7 @@ function draw() {
     );
 
 }
-
+    
 
 // =========================
 // GAME LOOP
@@ -289,5 +402,6 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 
 }
+
 
 gameLoop();
