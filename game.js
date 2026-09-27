@@ -204,6 +204,47 @@ function update() {
 
     }
 
+    // =========================
+// TRAP SYSTEM
+// =========================
+
+for (const trap of traps) {
+
+    if (trap.triggered) continue;
+
+    const playerTouchesTrap =
+        player.x < trap.x + trap.width &&
+        player.x + player.width > trap.x &&
+        player.y < trap.y + trap.height &&
+        player.y + player.height > trap.y;
+
+    if (playerTouchesTrap) {
+
+        if (trap.type === "fallingFloor") {
+
+            trap.triggered = true;
+
+            setTimeout(() => {
+
+                const index = platforms.findIndex(
+                    platform =>
+                        platform.x === trap.x &&
+                        platform.y === trap.y &&
+                        platform.width === trap.width &&
+                        platform.height === trap.height
+                );
+
+                if (index !== -1) {
+                    platforms.splice(index, 1);
+                }
+
+            }, 200);
+
+        }
+
+    }
+
+}
 
     // =========================
     // FINISH CHECK
