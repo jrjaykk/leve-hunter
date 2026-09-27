@@ -36,7 +36,6 @@ const gravity = 0.6;
 // CURRENT LEVEL
 // =========================
 
-const currentLevel = levels[0];
 
 
 // =========================
