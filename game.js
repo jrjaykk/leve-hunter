@@ -4,6 +4,7 @@ const ctx = canvas.getContext("2d");
 canvas.width = 960;
 canvas.height = 540;
 const currentLevel = levels[0];
+const traps = currentLevel.traps || [];
 
 // =========================
 // PLAYER
