@@ -3,15 +3,15 @@ const ctx = canvas.getContext("2d");
 
 canvas.width = 960;
 canvas.height = 540;
-
+const currentLevel = levels[0];
 
 // =========================
 // PLAYER
 // =========================
 
 const player = {
-    x: 80,
-    y: 400,
+    x: currentLevel.playerStart.x,
+    y: currentLevel.playerStart.y,
 
     width: 40,
     height: 50,
@@ -32,70 +32,20 @@ const player = {
 
 const gravity = 0.6;
 
-
 // =========================
-// LEVEL
+// CURRENT LEVEL
 // =========================
 
-const platforms = [
-
-    // Starting ground
-    {
-        x: 0,
-        y: 490,
-        width: 300,
-        height: 50
-    },
-
-    // Platform 1
-    {
-        x: 350,
-        y: 420,
-        width: 150,
-        height: 20
-    },
-
-    // Platform 2
-    {
-        x: 550,
-        y: 350,
-        width: 150,
-        height: 20
-    },
-
-    // Platform 3
-    {
-        x: 750,
-        y: 280,
-        width: 120,
-        height: 20
-    },
-
-    // Final ground
-    {
-        x: 700,
-        y: 490,
-        width: 260,
-        height: 50
-    }
-
-];
+const currentLevel = levels[0];
 
 
 // =========================
-// FINISH DOOR
+// LEVEL DATA
 // =========================
 
-const finish = {
+const platforms = currentLevel.platforms;
 
-    x: 850,
-    y: 350,
-
-    width: 50,
-    height: 140
-
-};
-
+const finish = currentLevel.finish;
 // =========================
 // KEYBOARD
 // =========================
@@ -283,8 +233,8 @@ function update() {
 
 function resetPlayer() {
 
-    player.x = 80;
-    player.y = 400;
+    player.x = currentLevel.playerStart.x;
+    player.y = currentLevel.playerStart.y;
 
     player.velocityX = 0;
     player.velocityY = 0;
