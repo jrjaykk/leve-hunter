@@ -47,11 +47,23 @@ const levels = [
         ],
 
         finish: {
-            x: 850,
-            y: 350,
-            width: 50,
-            height: 140
-        }
-    }
+    x: 850,
+    y: 350,
+    width: 50,
+    height: 140
+},
 
-];
+traps: [
+    {
+        type: "fallingFloor",
+
+        x: 300,
+        y: 490,
+
+        width: 50,
+        height: 50,
+
+        triggered: false
+    }
+]
+        ];
